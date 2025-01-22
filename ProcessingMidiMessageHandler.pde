@@ -1,6 +1,4 @@
 import themidibus.*;
-// import MidiMessageType;
-// import MidiMessage;
 
 // MidiBus myBus; // The MidiBus
 
@@ -12,7 +10,6 @@ void setup() {
 
   msg = new MidiMessage((byte) 0xB0, (byte) 0x07, (byte) 0x64);
   println(msg.getMessageType());
-  // println("test");
 
   noLoop();
 }
