@@ -1,5 +1,3 @@
-package com.midihandler;
-
 public class MidiMessage {
 
     private byte byte1;
