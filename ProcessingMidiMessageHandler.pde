@@ -20,8 +20,25 @@ void setup() {
 
   handler = new MidiMessageHandler(); // use default constructor, size 100 messages.
   
+  String incomingDeviceName = "SLIDER/KNOB";
+
+  // check that the desired device name is available
+  boolean foundIncoming = false;
+  for (String element : MidiBus.availableInputs()) {
+    if (incomingDeviceName.equals(element)) {
+      foundIncoming = true;
+      break;
+    }
+  }
+
+  if (!foundIncoming) {
+    println("Desired input device " + incomingDeviceName + " is not available");
+    noLoop();
+    while (true) {}
+  }
+  
   // Open connection to Midi hardware, using handler as the parent to recieve incoming messages
-  myBus = new MidiBus(handler, "SLIDER/KNOB", -1);
+  myBus = new MidiBus(handler, incomingDeviceName, -1);
   println("opened NK2");
 }
 
