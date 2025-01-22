@@ -1,11 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.Queue;
-
-public class MidiMessage {
-byte first;
-byte second;
-byte third;
-}
+// import MidiMessage
 
 public class MidiMessageHandler {
   // Class attributes
