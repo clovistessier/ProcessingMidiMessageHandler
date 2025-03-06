@@ -56,13 +56,13 @@ Note: if the device isn't available then it will print to the console that it co
 
 ## Class Details
 
-### `MidiMessageHandler(int maxSize)`
+### `MidiMessageHandler(PApplet parent, String incomingDeviceName, int maxSize)`
 
-Constructor. Initializes the message queue with the specified maximum size.
+Constructor. Pass the processing sketch as the parent and the name of the MIDI device you want to opern. Initializes the message queue with the specified maximum size. You can see see which devices are available with `MidiBus.list()`. If `incomingDeviceName` is not available, a warning is printed to the console. Creates a `MidiBus` object under the hood to listen for incoming messages.
 
-### `boolean hasWaitingMessages()`
+### `MidiMessageHandler(PApplet parent, String incomingDeviceName)`
 
-Returns `true` if there are messages waiting in the queue, `false` otherwise.
+Constructor. Same as above but passes a default queue size of 100 MIDI messages.
 
 ### `void clearMessages()`
 
