@@ -1,27 +1,52 @@
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import processing.core.PApplet;
+import themidibus.*;
 
 public class MidiMessageHandler {
-
+  private PApplet p; // Processing sketch (parent)
   private BlockingQueue<MidiMessage> messageQueue;
   private int maxSize;
   private static final int DEFAULT_MAX_SIZE = 100;
+  private MidiBus myBus;
+  private String incomingDeviceName;
 
   /**
    * Constructor with max size.
    *
    * @param maxSize The maximum size of the message queue.
    */
-  public MidiMessageHandler(int maxSize) {
+  public MidiMessageHandler(PApplet parent, String incomingDeviceName, int maxSize) {
+    p = parent;
+    this.incomingDeviceName = incomingDeviceName;
     this.maxSize = maxSize;
     messageQueue = new LinkedBlockingQueue<>(maxSize);
+
+    // check that the desired device name is available
+    boolean foundIncoming = false;
+    for (String element : MidiBus.availableInputs()) {
+      if (incomingDeviceName.equals(element)) {
+        foundIncoming = true;
+        break;
+      }
+    }
+
+    if (foundIncoming) {
+      // Open connection to Midi hardware, using handler as the parent to recieve
+      // incoming messages
+      myBus = new MidiBus(this, incomingDeviceName, -1);
+      p.println("opened " + incomingDeviceName);
+
+    } else {
+      p.println("Desired input device " + incomingDeviceName + " is not available");
+    }
   }
 
   /**
-     * Default constructor using a predefined default max size.
-     */
-    public MidiMessageHandler() {
-      this(DEFAULT_MAX_SIZE); // Call the other constructor with the default value
+   * Default constructor using a predefined default max size.
+   */
+  public MidiMessageHandler(PApplet parent, String incomingDeviceName) {
+    this(parent, incomingDeviceName, DEFAULT_MAX_SIZE); // Call the other constructor with the default value
   }
 
   public boolean hasWaitingMessages() {
@@ -74,8 +99,7 @@ public class MidiMessageHandler {
     MidiMessage message = new MidiMessage(statusByte, (byte) number, (byte) value);
     if (!messageQueue.offer(message)) {
       System.err.println("Warning: Controller Change message queue is full. Message discarded.");
-    }
-    else {
+    } else {
       // System.out.println("channel: "+channel+" number: "+number+" value: "+value);
     }
   }

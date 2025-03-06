@@ -19,16 +19,17 @@ The `MidiMessageHandler` class provides a thread-safe way to manage incoming MID
 
 1.  **Include the classes:** Place `MidiMessage.java`, `MidiMessageType.java`, and `MidiMessageHandler.java` in your Processing sketch's `code` folder
 
-2.  **Create an instance:** Create an instance of `MidiMessageHandler` in your Processing sketch and use it as the parent for the `themidibus`
+2.  **Create an instance:** Create an instance of `MidiMessageHandler` in your Processing sketch, passing the sketch as the parent and name of the device you want to open. The MidiMessageHandler object will open the connection to the MIDI device using MidiBus under the hood.
+
+Note: if the device isn't available then it will print to the console that it couldn't be found.
 
     ```java
 
     MidiMessageHandler midiHandler;
-    MidiBus myBus; // The MidiBus
 
     void setup() {
-        midiHandler = new MidiMessageHandler(100); // Create handler with a queue size of 100
-        myBus = news MidiBus(midiHandler, "IncomingDeviceName", "OutgoingDeviceName");
+        MidiBus.list()
+        midiHandler = new MidiMessageHandler(this, "incomingDeviceName", 100); // Create handler with a queue size of 100
     }
     ```
 
